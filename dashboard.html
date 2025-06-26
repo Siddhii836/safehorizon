@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeHorizon | AI-Powered Protection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0056b3;
+            --primary-light: #0077ff;
+            --secondary: #00a8e8;
+            --accent: #ff7e33;
+            --dark: #1a2a3a;
+            --darker: #0d1a26;
+            --light: #f0f8ff;
+            --lighter: #ffffff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --shadow: 0 4px 20px rgba(0, 86, 179, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Main Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, var(--dark), var(--darker));
+            padding: 30px 0;
+            position: relative;
+            z-index: 10;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .logo-main {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(to right, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        .logo-tagline {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 14px 25px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary-light);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item a:hover {
+            background: rgba(0, 118, 255, 0.1);
+            color: white;
+        }
+
+        .nav-item a:hover::before {
+            transform: translateX(0);
+        }
+
+        .nav-item a.active {
+            background: rgba(0, 118, 255, 0.2);
+            color: white;
+        }
+
+        .nav-item a.active::before {
+            transform: translateX(0);
+        }
+
+        .nav-item i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 7px;
+            border-radius: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 30px;
+            background-color: var(--lighter);
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .header-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin-right: 20px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Status Cards */
+        .status-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 118, 255, 0.03), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 86, 179, 0.15);
+        }
+
+        .status-card:hover::after {
+            opacity: 1;
+        }
+
+        .status-card.warning {
+            border-top-color: var(--warning);
+        }
+
+        .status-card.danger {
+            border-top-color: var(--danger);
+        }
+
+        .status-card.success {
+            border-top-color: var(--success);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .card-icon {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .card-description {
+            font-size: 0.85rem;
+            color: var(--dark);
+            opacity: 0.7;
+        }
+
+        /* Scan Section */
+        .scan-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .scan-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 86, 179, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .scan-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .scan-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(0, 118, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .scan-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 5px 20px rgba(0, 118, 255, 0.1);
+        }
+
+        .scan-card:hover::before {
+            opacity: 1;
+        }
+
+        .scan-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .scan-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 118, 255, 0.1), rgba(0, 168, 232, 0.1));
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .scan-card:hover .scan-icon {
+            transform: rotate(15deg);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .scan-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .scan-description {
+            font-size: 0.9rem;
+            color: var(--dark);
+            opacity: 0.7;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .scan-progress {
+            height: 8px;
+            background: rgba(0, 118, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                          rgba(255,255,255,0.8), 
+                          rgba(255,255,255,0.1));
+            animation: progressShine 2s infinite;
+        }
+
+        .scan-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scan-status {
+            font-size: 0.9rem;
+            color: var(--dark);
+            opacity: 0.7;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 86, 179, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 118, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.85rem;
+        }
+
+        /* File Drop Zone */
+        .drop-zone {
+            border: 2px dashed var(--primary);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            background: rgba(0, 118, 255, 0.05);
+            position: relative;
+        }
+
+        .drop-zone:hover {
+            background: rgba(0, 118, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .drop-zone.active {
+            border-color: var(--secondary);
+            background: rgba(0, 168, 232, 0.1);
+        }
+
+        .drop-zone i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone:hover i {
+            transform: scale(1.1);
+            color: var(--secondary);
+        }
+
+        .drop-zone p {
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .file-info {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        /* Hash Results */
+        .hash-results {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .hash-result {
+            margin-bottom: 20px;
+        }
+
+        .hash-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .hash-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .hash-value {
+            font-family: monospace;
+            background: rgba(0, 118, 255, 0.05);
+            padding: 12px;
+            border-radius: 6px;
+            word-break: break-all;
+            font-size: 0.9rem;
+            color: var(--dark);
+            border-left: 3px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .hash-value:hover {
+            background: rgba(0, 118, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .copy-btn {
+            margin-left: 10px;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        /* Threat List */
+        .threat-list {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .threat-list:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 86, 179, 0.2);
+        }
+
+        .threat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(220, 53, 69, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--danger);
+            transition: all 0.3s ease;
+        }
+
+        .threat-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.1);
+        }
+
+        .threat-item.safe {
+            background: rgba(40, 167, 69, 0.05);
+            border-left-color: var(--success);
+        }
+
+        .threat-item.safe:hover {
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.1);
+        }
+
+        .threat-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .threat-icon {
+            margin-right: 15px;
+            font-size: 1.3rem;
+            color: var(--danger);
+        }
+
+        .threat-item.safe .threat-icon {
+            color: var(--success);
+        }
+
+        .threat-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .threat-type {
+            font-size: 0.85rem;
+            color: var(--dark);
+            opacity: 0.7;
+            margin-top: 3px;
+        }
+
+        /* Quarantine Section */
+        .quarantine-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .quarantine-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 86, 179, 0.2);
+        }
+
+        .quarantine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 193, 7, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--warning);
+            transition: all 0.3s ease;
+        }
+
+        .quarantine-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.1);
+        }
+
+        .quarantine-info {
+            flex: 1;
+        }
+
+        .quarantine-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .quarantine-date {
+            font-size: 0.85rem;
+            color: var(--dark);
+            opacity: 0.7;
+            margin-top: 3px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Protection Panel */
+        .protection-panel {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .protection-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(0, 118, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 118, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .protection-item:hover {
+            background: rgba(0, 118, 255, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .protection-info {
+            flex: 1;
+        }
+
+        .protection-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .protection-description {
+            font-size: 0.85rem;
+            color: var(--dark);
+            opacity: 0.7;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .setting-item {
+            margin-bottom: 20px;
+        }
+
+        .setting-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .setting-description {
+            font-size: 0.85rem;
+            color: var(--dark);
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+
+        /* Animations */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            border-left: 4px solid var(--primary);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+
+        .notification.danger {
+            border-left-color: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .header-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .scan-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .status-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-main">SAFEHORIZON</div>
+                <div class="logo-tagline">Protecting You at Every Horizon</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#" class="active" id="dashboard-link"><i class="fas fa-shield-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="#" id="scan-link"><i class="fas fa-search"></i> AI Scanning</a></li>
+                <li class="nav-item"><a href="#" id="protection-link"><i class="fas fa-lock"></i> Protection</a></li>
+                <li class="nav-item"><a href="#" id="quarantine-link"><i class="fas fa-archive"></i> Quarantine <span class="badge">2</span></a></li>
+                <li class="nav-item"><a href="#" id="firewall-link"><i class="fas fa-fire"></i> Firewall</a></li>
+                <li class="nav-item"><a href="#" id="settings-link"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="header-title" id="panel-title">Dashboard</h1>
+                <div class="user-menu">
+                    <span class="last-updated" id="last-updated">Last updated: Just now</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Panel -->
+            <div id="dashboard-panel">
+                <!-- Status Cards -->
+                <div class="status-cards">
+                    <div class="status-card">
+                        <div class="card-header">
+                            <span class="card-title">AI Protection</span>
+                            <i class="fas fa-brain card-icon"></i>
+                        </div>
+                        <div class="card-value">Active</div>
+                        <div class="card-description">Next-gen machine learning protection</div>
+                    </div>
+                    
+                    <div class="status-card success">
+                        <div class="card-header">
+                            <span class="card-title">Last Scan</span>
+                            <i class="fas fa-check-circle card-icon"></i>
+                        </div>
+                        <div class="card-value">Clean</div>
+                        <div class="card-description">No threats detected</div>
+                    </div>
+                    
+                    <div class="status-card warning">
+                        <div class="card-header">
+                            <span class="card-title">Quarantine</span>
+                            <i class="fas fa-archive card-icon"></i>
+                        </div>
+                        <div class="card-value">2 Items</div>
+                        <div class="card-description">Potential threats isolated</div>
+                    </div>
+                    
+                    <div class="status-card">
+                        <div class="card-header">
+                            <span class="card-title">Encryption</span>
+                            <i class="fas fa-lock card-icon"></i>
+                        </div>
+                        <div class="card-value">Active</div>
+                        <div class="card-description">Military-grade protection</div>
+                    </div>
+                </div>
+
+                <!-- Scan Section -->
+                <div class="scan-section" id="scan-section">
+                    <div class="section-header">
+                        <h2 class="section-title">AI-Powered Scanning</h2>
+                    </div>
+                    
+                    <div class="scan-options">
+                        <div class="scan-card">
+                            <div class="scan-card-header">
+                                <div class="scan-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h3 class="scan-title">Quick Scan</h3>
+                            </div>
+                            <p class="scan-description">Scan critical system areas for immediate threats using our AI engine.</p>
+                            <div class="scan-progress">
+                                <div class="progress-bar" id="quick-scan-progress"></div>
+                            </div>
+                            <div class="scan-actions">
+                                <span class="scan-status" id="quick-scan-status">Ready</span>
+                                <button class="btn btn-primary" id="quick-scan-btn">
+                                    <i class="fas fa-play"></i> Start Scan
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="scan-card">
+                            <div class="scan-card-header">
+                                <div class="scan-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h3 class="scan-title">Full System Scan</h3>
+                            </div>
+                            <p class="scan-description">Complete deep scan of all files and programs with zero-day threat detection.</p>
+                            <div class="scan-progress">
+                                <div class="progress-bar" id="full-scan-progress"></div>
+                            </div>
+                            <div class="scan-actions">
+                                <span class="scan-status" id="full-scan-status">Ready</span>
+                                <button class="btn btn-primary" id="full-scan-btn">
+                                    <i class="fas fa-play"></i> Start Scan
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="scan-card">
+                            <div class="scan-card-header">
+                                <div class="scan-icon">
+                                    <i class="fas fa-fingerprint"></i>
+                                </div>
+                                <h3 class="scan-title">File Hash Check</h3>
+                            </div>
+                            <p class="scan-description">Verify file integrity with cryptographic hashing (MD5, SHA-1, SHA-256).</p>
+                            
+                            <div class="drop-zone" id="drop-zone">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop files here</p>
+                                <p class="file-info" id="file-info">or click to browse</p>
+                                <input type="file" id="file-input" style="display: none;">
+                            </div>
+                            
+                            <div class="hash-results" id="hash-results">
+                                <div class="hash-result">
+                                    <div class="hash-title"><i class="fas fa-hashtag"></i> MD5 Hash</div>
+                                    <div class="hash-value" id="md5-hash">No file selected</div>
+                                </div>
+                                
+                                <div class="hash-result">
+                                    <div class="hash-title"><i class="fas fa-hashtag"></i> SHA-1 Hash</div>
+                                    <div class="hash-value" id="sha1-hash">No file selected</div>
+                                </div>
+                                
+                                <div class="hash-result">
+                                    <div class="hash-title"><i class="fas fa-hashtag"></i> SHA-256 Hash</div>
+                                    <div class="hash-value" id="sha256-hash">No file selected</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Threat List -->
+                <div class="threat-list">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Threats</h2>
+                    </div>
+                    
+                    <div id="threats-container">
+                        <div class="threat-item">
+                            <div class="threat-info">
+                                <i class="fas fa-virus threat-icon"></i>
+                                <div>
+                                    <div class="threat-name">Trojan:Win32/Wacatac.B!ml</div>
+                                    <div class="threat-type">Detected in C:\Downloads\setup.exe</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-sm quarantine-btn">
+                                <i class="fas fa-archive"></i> Quarantine
+                            </button>
+                        </div>
+                        
+                        <div class="threat-item safe">
+                            <div class="threat-info">
+                                <i class="fas fa-check-circle threat-icon"></i>
+                                <div>
+                                    <div class="threat-name">System32/kernel.dll</div>
+                                    <div class="threat-type">Verified system file</div>
+                                </div>
+                            </div>
+                            <span style="color: var(--success); font-weight: 500;">Safe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quarantine Section -->
+                <div class="quarantine-section" id="quarantine-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Auto-Containment</h2>
+                    </div>
+                    
+                    <div id="quarantine-container">
+                        <div class="quarantine-item">
+                            <div class="quarantine-info">
+                                <div class="quarantine-name">invoice.exe</div>
+                                <div class="quarantine-date">Quarantined: Today, 14:32 - Trojan:Win32/FakeThreat</div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-outline btn-sm restore-btn">
+                                    <i class="fas fa-undo"></i> Restore
+                                </button>
+                                <button class="btn btn-outline btn-sm delete-btn">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="quarantine-item">
+                            <div class="quarantine-info">
+                                <div class="quarantine-name">script.js</div>
+                                <div class="quarantine-date">Quarantined: Yesterday, 09:15 - Exploit:JS/Blacole</div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-outline btn-sm restore-btn">
+                                    <i class="fas fa-undo"></i> Restore
+                                </button>
+                                <button class="btn btn-outline btn-sm delete-btn">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Protection Panel -->
+            <div class="protection-panel" id="protection-panel">
+                <div class="section-header">
+                    <h2 class="section-title">Identify Shield</h2>
+                </div>
+                
+                <div class="protection-item">
+                    <div class="protection-info">
+                        <div class="protection-name">Real-time AI Protection</div>
+                        <div class="protection-description">Monitors system activity for malicious behavior using machine learning</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="protection-item">
+                    <div class="protection-info">
+                        <div class="protection-name">Behavioral Analysis</div>
+                        <div class="protection-description">Detects suspicious behavior patterns in applications</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="protection-item">
+                    <div class="protection-info">
+                        <div class="protection-name">Ransomware Protection</div>
+                        <div class="protection-description">Protects your files from encryption by ransomware</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="protection-item">
+                    <div class="protection-info">
+                        <div class="protection-name">Zero-Day Exploit Protection</div>
+                        <div class="protection-description">Protects against unknown vulnerabilities</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="protection-item">
+                    <div class="protection-info">
+                        <div class="protection-name">Web Protection</div>
+                        <div class="protection-description">Blocks malicious websites and downloads</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="protection-item">
+                    <div class="protection-info">
+                        <div class="protection-name">Data Encryption</div>
+                        <div class="protection-description">Military-grade encryption for sensitive files</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div class="settings-panel" id="settings-panel">
+                <div class="section-header">
+                    <h2 class="section-title">Settings</h2>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-title">Automatic Updates</div>
+                    <div class="setting-description">Automatically download and install virus definition updates</div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-title">Scan Schedule</div>
+                    <div class="setting-description">Automatically run scans at specified times</div>
+                    <div style="margin-top: 10px;">
+                        <select class="btn btn-outline" style="padding: 8px 12px; width: 100%; max-width: 250px;">
+                            <option>Daily at 2:00 AM</option>
+                            <option>Weekly (Sundays)</option>
+                            <option>Monthly (1st of month)</option>
+                            <option>Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-title">Notifications</div>
+                    <div class="setting-description">Receive notifications for threats and updates</div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-title">Cloud Protection</div>
+                    <div class="setting-description">Use cloud-based AI for enhanced threat detection</div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-title">Automatic Sample Submission</div>
+                    <div class="setting-description">Automatically send suspicious files for analysis</div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-title">UI Theme</div>
+                    <div class="setting-description">Change application appearance</div>
+                    <div style="margin-top: 10px;">
+                        <select class="btn btn-outline" style="padding: 8px 12px; width: 100%; max-width: 250px;">
+                            <option>Light</option>
+                            <option>Dark</option>
+                            <option>System Default</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Panel Navigation
+        document.getElementById('dashboard-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPanel('dashboard');
+        });
+
+        document.getElementById('scan-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPanel('dashboard');
+            document.getElementById('scan-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('protection-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPanel('protection');
+        });
+
+        document.getElementById('quarantine-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPanel('dashboard');
+            document.getElementById('quarantine-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('settings-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            showPanel('settings');
+        });
+
+        function showPanel(panelName) {
+            // Hide all panels
+            document.getElementById('dashboard-panel').style.display = 'none';
+            document.getElementById('protection-panel').style.display = 'none';
+            document.getElementById('settings-panel').style.display = 'none';
+            
+            // Show selected panel
+            document.getElementById(panelName + '-panel').style.display = 'block';
+            
+            // Update title
+            document.getElementById('panel-title').textContent = panelName.charAt(0).toUpperCase() + panelName.slice(1);
+            
+            // Update active nav item
+            document.querySelectorAll('.nav-item a').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById(panelName + '-link').classList.add('active');
+        }
+
+        // Scan Functionality
+        let quickScanInterval, fullScanInterval;
+        
+        document.getElementById('quick-scan-btn').addEventListener('click', function() {
+            const btn = this;
+            const progressBar = document.getElementById('quick-scan-progress');
+            const statusElement = document.getElementById('quick-scan-status');
+            
+            if (btn.textContent.includes('Stop')) {
+                clearInterval(quickScanInterval);
+                btn.innerHTML = '<i class="fas fa-play"></i> Start Scan';
+                statusElement.textContent = 'Scan Stopped';
+                return;
+            }
+            
+            btn.innerHTML = '<i class="fas fa-stop"></i> Stop Scan';
+            statusElement.textContent = 'Scanning...';
+            progressBar.style.width = '0%';
+            
+            let progress = 0;
+            quickScanInterval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(quickScanInterval);
+                    btn.innerHTML = '<i class="fas fa-play"></i> Start Scan';
+                    statusElement.textContent = 'Scan Complete - No threats found';
+                    showNotification('Quick scan completed. No threats found.', 'success');
+                    
+                    // Randomly detect a threat (20% chance)
+                    if (Math.random() < 0.2) {
+                        addThreat('Trojan:Win32/FakeThreat' + Math.floor(Math.random() * 1000), 
+                                  'C:\\Windows\\Temp\\tempfile.exe');
+                        statusElement.textContent = 'Scan Complete - 1 threat found';
+                        showNotification('Quick scan found a threat!', 'danger');
+                    }
+                }
+            }, 30);
+        });
+        
+        document.getElementById('full-scan-btn').addEventListener('click', function() {
+            const btn = this;
+            const progressBar = document.getElementById('full-scan-progress');
+            const statusElement = document.getElementById('full-scan-status');
+            
+            if (btn.textContent.includes('Stop')) {
+                clearInterval(fullScanInterval);
+                btn.innerHTML = '<i class="fas fa-play"></i> Start Scan';
+                statusElement.textContent = 'Scan Stopped';
+                return;
+            }
+            
+            btn.innerHTML = '<i class="fas fa-stop"></i> Stop Scan';
+            statusElement.textContent = 'Scanning...';
+            progressBar.style.width = '0%';
+            
+            let progress = 0;
+            fullScanInterval = setInterval(() => {
+                progress += 0.5; // Slower progress for full scan
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(fullScanInterval);
+                    btn.innerHTML = '<i class="fas fa-play"></i> Start Scan';
+                    statusElement.textContent = 'Scan Complete - No threats found';
+                    showNotification('Full scan completed. No threats found.', 'success');
+                    
+                    // Randomly detect a threat (30% chance)
+                    if (Math.random() < 0.3) {
+                        addThreat('Exploit:JS/Blacole' + Math.floor(Math.random() * 1000), 
+                                  'C:\\Users\\Public\\Documents\\script.js');
+                        statusElement.textContent = 'Scan Complete - 1 threat found';
+                        showNotification('Full scan found a threat!', 'danger');
+                    }
+                }
+            }, 30);
+        });
+        
+        // File Hashing Functionality
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileInfo = document.getElementById('file-info');
+        const hashResults = document.getElementById('hash-results');
+        
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', handleFileSelection);
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(event => {
+            dropZone.addEventListener(event, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(event => {
+            dropZone.addEventListener(event, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(event => {
+            dropZone.addEventListener(event, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropZone.classList.add('active');
+        }
+        
+        function unhighlight() {
+            dropZone.classList.remove('active');
+        }
+        
+        dropZone.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFileSelection({ target: { files } });
+        }
+        
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const file = files[0];
+                fileInfo.textContent = `Selected: ${file.name}`;
+                hashResults.style.display = 'block';
+                
+                // Generate fake hashes for demo
+                document.getElementById('md5-hash').textContent = generateRandomHash(32);
+                document.getElementById('sha1-hash').textContent = generateRandomHash(40);
+                document.getElementById('sha256-hash').textContent = generateRandomHash(64);
+                
+                // Add copy functionality
+                addHashCopyButtons();
+            }
+        }
+        
+        function generateRandomHash(length) {
+            const chars = '0123456789abcdef';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        function addHashCopyButtons() {
+            const hashValues = document.querySelectorAll('.hash-value');
+            hashValues.forEach(hashValue => {
+                // Remove existing button if any
+                const existingBtn = hashValue.nextElementSibling;
+                if (existingBtn && existingBtn.classList.contains('copy-btn')) {
+                    existingBtn.remove();
+                }
+                
+                // Add new copy button
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+                copyBtn.title = 'Copy to clipboard';
+                copyBtn.addEventListener('click', function() {
+                    const hash = hashValue.textContent;
+                    navigator.clipboard.writeText(hash).then(() => {
+                        showNotification('Hash copied to clipboard!', 'success');
+                    });
+                });
+                hashValue.parentNode.insertBefore(copyBtn, hashValue.nextSibling);
+            });
+        }
+        
+        // Threat Management
+        function addThreat(name, location) {
+            const threatsContainer = document.getElementById('threats-container');
+            const threatItem = document.createElement('div');
+            threatItem.className = 'threat-item';
+            threatItem.innerHTML = `
+                <div class="threat-info">
+                    <i class="fas fa-virus threat-icon"></i>
+                    <div>
+                        <div class="threat-name">${name}</div>
+                        <div class="threat-type">Detected in ${location}</div>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-sm quarantine-btn">
+                    <i class="fas fa-archive"></i> Quarantine
+                </button>
+            `;
+            threatsContainer.prepend(threatItem);
+            
+            // Update quarantine badge
+            const badge = document.querySelector('#quarantine-link .badge');
+            const count = parseInt(badge.textContent) + 1;
+            badge.textContent = count;
+        }
+        
+        // Quarantine Functionality
+        document.addEventListener('click', function(e) {
+            // Quarantine threat
+            if (e.target.classList.contains('quarantine-btn') || 
+                e.target.closest('.quarantine-btn')) {
+                const threatItem = e.target.closest('.threat-item');
+                const threatName = threatItem.querySelector('.threat-name').textContent;
+                const threatType = threatItem.querySelector('.threat-type').textContent.replace('Detected in ', '');
+                
+                // Add to quarantine
+                const quarantineContainer = document.getElementById('quarantine-container');
+                const quarantineItem = document.createElement('div');
+                quarantineItem.className = 'quarantine-item';
+                quarantineItem.innerHTML = `
+                    <div class="quarantine-info">
+                        <div class="quarantine-name">${threatType.split('\\').pop()}</div>
+                        <div class="quarantine-date">Quarantined: ${new Date().toLocaleString()} - ${threatName}</div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-sm restore-btn">
+                            <i class="fas fa-undo"></i> Restore
+                        </button>
+                        <button class="btn btn-outline btn-sm delete-btn">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                quarantineContainer.prepend(quarantineItem);
+                
+                // Remove from threats
+                threatItem.remove();
+                
+                // Update badge
+                const badge = document.querySelector('#quarantine-link .badge');
+                badge.textContent = parseInt(badge.textContent) + 1;
+                
+                showNotification('Threat quarantined successfully', 'success');
+            }
+            
+            // Restore from quarantine
+            if (e.target.classList.contains('restore-btn') || 
+                e.target.closest('.restore-btn')) {
+                if (confirm('Restore this file to its original location?')) {
+                    const item = e.target.closest('.quarantine-item');
+                    item.remove();
+                    
+                    // Update badge
+                    const badge = document.querySelector('#quarantine-link .badge');
+                    const count = parseInt(badge.textContent) - 1;
+                    badge.textContent = count > 0 ? count : '0';
+                    
+                    showNotification('File restored from quarantine', 'success');
+                }
+            }
+            
+            // Delete from quarantine
+            if (e.target.classList.contains('delete-btn') || 
+                e.target.closest('.delete-btn')) {
+                if (confirm('Permanently delete this file?')) {
+                    const item = e.target.closest('.quarantine-item');
+                    item.remove();
+                    
+                    // Update badge
+                    const badge = document.querySelector('#quarantine-link .badge');
+                    const count = parseInt(badge.textContent) - 1;
+                    badge.textContent = count > 0 ? count : '0';
+                    
+                    showNotification('File permanently deleted', 'warning');
+                }
+            }
+        });
+        
+        // Notifications
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'danger' ? 'exclamation-triangle' : 
+                                   type === 'warning' ? 'exclamation-circle' : 'check-circle'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 5000);
+        }
+        
+        // Simulate real-time protection
+        setInterval(() => {
+            // 5% chance of detecting a threat
+            if (Math.random() < 0.05) {
+                const threats = [
+                    'Trojan:Win32/Fuerboos',
+                    'Exploit:JS/Blacole',
+                    'Worm:VBS/Jenxcus',
+                    'Adware:Win32/Diplugem'
+                ];
+                const threatName = threats[Math.floor(Math.random() * threats.length)] + Math.floor(Math.random() * 1000);
+                const locations = [
+                    'C:\\Windows\\Temp\\',
+                    'C:\\Users\\Public\\Downloads\\',
+                    'C:\\ProgramData\\',
+                    'C:\\Users\\User\\AppData\\Local\\Temp\\'
+                ];
+                const location = locations[Math.floor(Math.random() * locations.length)] + 
+                                ['setup.exe', 'document.pdf', 'image.jpg', 'script.js'][Math.floor(Math.random() * 4)];
+                
+                addThreat(threatName, location);
+                showNotification(`Real-time protection detected: ${threatName}`, 'danger');
+            }
+        }, 30000);
+        
+        // Update last updated time
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('last-updated').textContent = `Last updated: ${timeStr}`;
+        }
+        setInterval(updateLastUpdated, 60000);
+        updateLastUpdated();
+    </script>
+</body>
+</html>

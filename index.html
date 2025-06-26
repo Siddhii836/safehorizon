@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeHorizon | Next-Gen Antivirus Protection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --cyber-teal: #00CEC9;
+            --neon-pink: #FD79A8;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0F2027, #203A43, #2C5364);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Cyberpunk Glow Effect */
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px var(--cyber-teal); }
+            50% { text-shadow: 0 0 20px var(--neon-pink); }
+            100% { text-shadow: 0 0 10px var(--cyber-teal); }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Main Container */
+        .cyber-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Holographic Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(108, 92, 231, 0.3);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--cyber-teal), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s infinite;
+        }
+
+        .logo i {
+            margin-right: 12px;
+            font-size: 2rem;
+        }
+
+        /* Cyber Buttons */
+        .cyber-btn {
+            position: relative;
+            padding: 0.8rem 2rem;
+            color: white;
+            font-weight: 600;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            z-index: 1;
+            overflow: hidden;
+            border-radius: 50px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(108, 92, 231, 0.5);
+            transition: all 0.3s;
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(108, 92, 231, 0.4), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-light));
+            box-shadow: 0 0 15px rgba(108, 92, 231, 0.5);
+        }
+
+        /* Hero Section */
+        .cyber-hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, white, var(--cyber-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            opacity: 0.9;
+            position: relative;
+            display: inline-block;
+        }
+
+        .tagline::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--neon-pink));
+        }
+
+        /* Cyber Grid Features */
+        .cyber-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 3rem auto;
+        }
+
+        .cyber-card {
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(108, 92, 231, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--cyber-teal), var(--neon-pink));
+            z-index: -1;
+            border-radius: 16px;
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        .cyber-card:hover::before {
+            opacity: 1;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { filter: blur(5px); }
+            100% { filter: blur(5px) hue-rotate(360deg); }
+        }
+
+        .cyber-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom, var(--cyber-teal), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .cyber-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-container" id="cyberContainer">
+        <!-- Floating particles will be added by JS -->
+        
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>SafeHorizon</span>
+            </div>
+            <div>
+                <button class="cyber-btn" style="margin-right: 1rem;">Login</button>
+                <button class="cyber-btn cyber-btn-primary">Sign Up</button>
+            </div>
+        </header>
+        
+        <main class="cyber-hero">
+            <h1 class="hero-title floating">SAFEHORIZON</h1>
+            <p class="tagline">Protecting You at Every Horizon</p>
+            
+            <div style="display: flex; gap: 1.5rem; margin-bottom: 3rem;">
+                <button onclick="window.location.href='dashboard.html'" class="cyber-btn cyber-btn-primary" style="padding: 1rem 2.5rem;">
+                    <i class="fas fa-shield-virus"></i> LAUNCH PROTECTION
+                </button>
+                <button class="cyber-btn" style="padding: 1rem 2.5rem;">
+                    <i class="fas fa-play"></i> WATCH DEMO
+                </button>
+            </div>
+            
+            <div class="cyber-features">
+                <div class="cyber-card">
+                    <div class="cyber-icon">
+                        <i class="fas fa-biohazard"></i>
+                    </div>
+                    <h3>AI-Powered Scanning</h3>
+                    <p>Next-gen machine learning detects zero-day threats before they strike</p>
+                </div>
+                
+                <div class="cyber-card">
+                    <div class="cyber-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3>Identity Shield</h3>
+                    <p>Military-grade encryption for your digital footprint</p>
+                </div>
+                
+                <div class="cyber-card">
+                    <div class="cyber-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Auto-Containment</h3>
+                    <p>Automatically quarantines suspicious files in a virtual sandbox</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Create floating particles
+        const container = document.getElementById('cyberContainer');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 5 + 1;
+            const posX = Math.random() * window.innerWidth;
+            const posY = Math.random() * window.innerHeight;
+            const opacity = Math.random() * 0.5 + 0.1;
+            const animationDuration = Math.random() * 20 + 10;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${posX}px`;
+            particle.style.top = `${posY}px`;
+            particle.style.opacity = opacity;
+            particle.style.animation = `float ${animationDuration}s infinite ease-in-out`;
+            
+            container.appendChild(particle);
+        }
+
+        // Cyber button hover effect enhancement
+        document.querySelectorAll('.cyber-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = 'translateY(-3px)';
+                btn.style.boxShadow = '0 10px 20px rgba(0,0,0,0.3)';
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translateY(0)';
+                btn.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
